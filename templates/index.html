@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Статистика сообщений</h1>
+
+    <h2>По дням</h2>
+    <table>
+        <tr><th>Дата</th><th>Сообщений</th></tr>
+        {% for date, count in stats["daily"] %}
+        <tr><td>{{ date }}</td><td>{{ count }}</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>По пользователям</h2>
+    <table>
+        <tr><th>Пользователь</th><th>Сообщений</th></tr>
+        {% for user, count in stats["users"] %}
+        <tr><td>{{ user }}</td><td>{{ count }}</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>По командам</h2>
+    <table>
+        <tr><th>Команда</th><th>Использований</th></tr>
+        {% for command, count in stats["commands"] %}
+        <tr><td>{{ command }}</td><td>{{ count }}</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
