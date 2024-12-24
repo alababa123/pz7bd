@@ -1,20 +1,36 @@
 import sqlite3
 
-def init_db():
-    conn = sqlite3.connect("messages.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        username TEXT,
-        message TEXT,
-        command TEXT,
-        date TEXT
-    )
-    """)
-    conn.commit()
+
+DATABASE = 'bot_database.db'
+
+def get_db_connection():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def initialize_db():
+    conn = get_db_connection()
+    with conn:
+        conn.execute('''CREATE TABLE IF NOT EXISTS users (
+                            id INTEGER PRIMARY KEY,
+                            username TEXT,
+                            password TEXT,
+                            role TEXT
+                        )''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS responses (
+                            id INTEGER PRIMARY KEY,
+                            trigger TEXT,
+                            response TEXT
+                        )''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS messages (
+                            id INTEGER PRIMARY KEY,
+                            user_id INTEGER,
+                            message TEXT,
+                            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                        )''')
     conn.close()
+
 
 def log_message(user_id, username, message, command, date):
     conn = sqlite3.connect("messages.db")
